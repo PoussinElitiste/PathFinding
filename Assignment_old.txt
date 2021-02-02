@@ -1,0 +1,61 @@
+===[ Introduction ]============================================================
+
+The enclosed code is some basic code for managing path-node and Power-Up
+objects in a 3D Map. A very simple power-up hierarchy is in place but is
+far from complete.
+
+As I'm sure you know, path-nodes are used by AI agents to navigate through a
+map. A typical "real" map would contain upwards of a thousand PathNodes, but
+we've included a simple graph of 8 nodes. A pictoral representation of the
+graph is shown in Graph.png and the data has been entered in Main.cpp.
+
+The test has been broken up into three small parts. The entire thing should
+take no-more than a few hours (an evening, tops), but take your time. Please
+keep a rough idea of how long you spent at it, though -- if you spent more
+time and did cooler stuff, that's all good.
+
+You may modify the code as you see fit, but we are expecting that you write 
+code that compiles and runs; we will be running your code against a test 
+harness to check for correctness.
+
+Note: Node5 and Node7 having the same position is intentional (Main.cpp),
+please keep it this way.
+
+===[ Part 1 ]==================================================================
+
+Find as many bugs with the existing code as you can. There are several subtle
+but common errors throughout the code. It compiles, and runs, but would not
+stand up to production use.
+
+For bonus marks, add a few statements here-and-there to make the code more 
+quick to detect errors.
+
+You can impose any reasonable restrictions on how the functions can be used
+and abused. Halting the program on error illegal input is acceptable in most
+cases, but use your judgement for deciding when it isn't appropriate.
+
+===[ Part 2 ]==================================================================
+
+Implement the "findPowerUp" function sketched out in Main.cpp. It is to find a
+path through the graph of PathNodes to the nearest PowerUp of the given mType.
+Return NULL for no-path, or return an allocated array containing the path as
+shown in the function skeleton. We are looking for the shortest path to a 
+matching powerup -- ie. the path where the sum of the edge weights is 
+minimized, where an edge weight is the distance between connected vertexes.
+
+Please briefly describe the algorithm you chose and why you chose it in a
+comment block at the top of the function. You will be evaluated on correctness,
+efficiency from a performance and memory perspective, as well as general code
+structure and understandability. 
+Please assume that your code may be called from a multi-threaded environment
+(more than 1 search query at the same time).
+
+===[ Part 3 ]==================================================================
+
+Fill in the Armor and Weapon classes. Add members and methods that you think
+would be useful for these kinds of objects. What you add is totally up to you;
+it's more meant to show your personal coding style and how you think about
+what kind of functionality you'd want to add to the game.
+
+This part is very subjective, so don't worry about it -- there is no wrong
+answer.
