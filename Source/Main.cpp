@@ -27,47 +27,49 @@ inline void LinkNodes(PathNode *n1, PathNode *n2)
 
 int main(int, char*[])
 {
-    PathNodes pathNodes{
-        new PathNode("Node0", Vertex(300, 60, 0)),
-        new PathNode("Node1", Vertex(100, 60, 0)),
-        new PathNode("Node2", Vertex(80, 560, 0)),
-        new PathNode("Node3", Vertex(280, 650, 0)),
-        new PathNode("Node4", Vertex(300, 250, 0)),
-        new PathNode("Node5", Vertex(450, 400, 0)),
-        new PathNode("Node6", Vertex(450, 60, 0)),
-        new PathNode("Node7", Vertex(450, 400, 0))
-    };
+    typedef std::vector<std::unique_ptr<PowerUp>> UniquePowerUps;
+    typedef std::vector<std::unique_ptr<PathNode>> UniquePathNodes;
 
-    LinkNodes(pathNodes[1], pathNodes[4]);
-    LinkNodes(pathNodes[0], pathNodes[1]);
-    LinkNodes(pathNodes[0], pathNodes[6]);
-    LinkNodes(pathNodes[0], pathNodes[4]);
-    LinkNodes(pathNodes[7], pathNodes[4]);
-    LinkNodes(pathNodes[7], pathNodes[5]);
-    LinkNodes(pathNodes[2], pathNodes[4]);
-    LinkNodes(pathNodes[2], pathNodes[3]);
-    LinkNodes(pathNodes[3], pathNodes[5]);
+    UniquePathNodes pathNodes;
+    pathNodes.emplace_back(std::make_unique<PathNode>("Node0", std::move(Vertex(300, 60 , 0))));
+    pathNodes.emplace_back(std::make_unique<PathNode>("Node1", std::move(Vertex(100, 60 , 0))));
+    pathNodes.emplace_back(std::make_unique<PathNode>("Node2", std::move(Vertex(80 , 560, 0))));
+    pathNodes.emplace_back(std::make_unique<PathNode>("Node3", std::move(Vertex(280, 650, 0))));
+    pathNodes.emplace_back(std::make_unique<PathNode>("Node4", std::move(Vertex(300, 250, 0))));
+    pathNodes.emplace_back(std::make_unique<PathNode>("Node5", std::move(Vertex(450, 400, 0))));
+    pathNodes.emplace_back(std::make_unique<PathNode>("Node6", std::move(Vertex(450, 60 , 0))));
+    pathNodes.emplace_back(std::make_unique<PathNode>("Node7", std::move(Vertex(450, 400, 0))));
 
-    PowerUps powerUps;
+    LinkNodes(pathNodes[1].get(), pathNodes[4].get());
+    LinkNodes(pathNodes[0].get(), pathNodes[1].get());
+    LinkNodes(pathNodes[0].get(), pathNodes[6].get());
+    LinkNodes(pathNodes[0].get(), pathNodes[4].get());
+    LinkNodes(pathNodes[7].get(), pathNodes[4].get());
+    LinkNodes(pathNodes[7].get(), pathNodes[5].get());
+    LinkNodes(pathNodes[2].get(), pathNodes[4].get());
+    LinkNodes(pathNodes[2].get(), pathNodes[3].get());
+    LinkNodes(pathNodes[3].get(), pathNodes[5].get());
 
-    powerUps.push_back(new Weapon("Weapon0", Vertex(340, 670, 0)));
-    pathNodes[3]->AddPowerUp(powerUps[0]);    
-    powerUps.push_back(new Weapon("Weapon1", Vertex(500, 220, 0)));
-    pathNodes[7]->AddPowerUp(powerUps[1]);    
+    UniquePowerUps powerUps;
 
-    powerUps.push_back(new Health("Health0", Vertex(490, 10, 0), 5.f));
-    pathNodes[6]->AddPowerUp(powerUps[2]);    
-    powerUps.push_back(new Health("Health1", Vertex(120, 20, 0), 10.f));
-    pathNodes[1]->AddPowerUp(powerUps[3]);    
+    powerUps.emplace_back(std::make_unique<Weapon>("Weapon0", std::move(Vertex(340, 670, 0))));
+    pathNodes[3]->AddPowerUp(powerUps[0].get());    
+    powerUps.emplace_back(std::make_unique<Weapon>("Weapon1", std::move(Vertex(500, 220, 0))));
+    pathNodes[7]->AddPowerUp(powerUps[1].get());
 
-    powerUps.push_back(new Armor("Armour0", Vertex(500, 360, 0)));
-    pathNodes[5]->AddPowerUp(powerUps[4]);    
-    powerUps.push_back(new Armor("Armour1", Vertex(180, 525, 0)));
-    pathNodes[2]->AddPowerUp(powerUps[5]);    
+    powerUps.emplace_back(std::make_unique<Health>("Health0", std::move(Vertex(490, 10, 0)), 5.f));
+    pathNodes[6]->AddPowerUp(powerUps[2].get());
+    powerUps.emplace_back(std::make_unique<Health>("Health1", std::move(Vertex(120, 20, 0)), 10.f));
+    pathNodes[1]->AddPowerUp(powerUps[3].get());
+
+    powerUps.emplace_back(std::make_unique<Armor>("Armour0", std::move(Vertex(500, 360, 0))));
+    pathNodes[5]->AddPowerUp(powerUps[4].get());
+    powerUps.emplace_back(std::make_unique<Armor>("Armour1", std::move(Vertex(180, 525, 0))));
+    pathNodes[2]->AddPowerUp(powerUps[5].get());
 
     PathNodes path;
 
-    if(!FindPowerUp(path, PowerUp::PowerUpType::WEAPON, pathNodes[4]))
+    if(!FindPowerUp(path, PowerUp::PowerUpType::WEAPON, pathNodes[4].get()))
     {
         printf("No path found: IMPOSSIBLE!\n");
     }

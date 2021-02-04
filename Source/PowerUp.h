@@ -16,11 +16,11 @@ public:
 
     PowerUp(const char* name, Vertex position, PowerUpType pType = PowerUpType::INVALID):
         mType(pType), mPosition(std::move(position)), mName(name)
-    {    }
+    {}
 
     ~PowerUp()
     {
-        delete mName;
+        delete[] mName;
     }   
 
     PowerUpType GetPowerUpType() const

@@ -3,9 +3,8 @@
 
 struct Vertex
 {
-    Vertex()
-    {
-    }
+    Vertex() : x{}, y{}, z{}
+    {}
 
     Vertex(float iX, float iY, float iZ) :
         x(iX),

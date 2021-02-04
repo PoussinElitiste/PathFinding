@@ -2,9 +2,8 @@
 #define PATH_NODE_H
 
 #include "Vertex.h"
-
+#include <memory>
 #include <vector>
-#include <algorithm>
 
 class PathNode;
 typedef std::vector<PathNode*> PathNodes;
@@ -16,12 +15,10 @@ class PathNode
 {
 public:
     PathNode(const char* name, Vertex position) :
-        mPosition(position), mName(name)
+        mPosition(std::move(position)), mName(name)
     {}
     
-    ~PathNode()
-    {
-    }
+    ~PathNode() = default;
 
     void AddLink(PathNode *pathNode)
     {
@@ -41,8 +38,8 @@ public:
     
     void RemovePowerUp(PowerUp *powerUp)
     {
-        PowerUps::iterator i = std::find(mPowerUps.begin(), mPowerUps.end(), powerUp);
-        mPowerUps.erase(i);
+        PowerUps::iterator it = std::find(mPowerUps.begin(), mPowerUps.end(), powerUp);
+        mPowerUps.erase(it);
     }
 
     const char* GetName() const

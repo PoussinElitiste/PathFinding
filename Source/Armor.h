@@ -6,13 +6,13 @@
 class Armor : public PowerUp
 {
 public:
-    Armor(const char* name, const Vertex& position) :
-        PowerUp(name, position, PowerUpType::ARMOUR), mClanTag(NULL)
+    Armor(const char* name, Vertex position) :
+        PowerUp(name, std::move(position), PowerUpType::ARMOUR), mClanTag(NULL)
     {}
 
     ~Armor()
     {
-        delete mClanTag;
+        delete[] mClanTag;
     }
 
     const char* GetClanTag() const
@@ -20,13 +20,13 @@ public:
         return mClanTag;
     }
 
-    void SetClanTag(char* n)
+    void SetClanTag(const char* n)
     {
         mClanTag = n;
     }
 
 protected:
-    char* mClanTag;
+    const char* mClanTag;
 };
 
 #endif // ARMOUR_H
