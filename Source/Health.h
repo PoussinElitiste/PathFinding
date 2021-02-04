@@ -6,14 +6,13 @@
 class Health : public PowerUp
 {
 public:
-    Health(const char* name, Vertex position) :
-        PowerUp(name, position)
-    {
-        mType = HEALTH;
-    }
+    Health(const char* name, Vertex position, float healing) : 
+        PowerUp(name, std::move(position), PowerUpType::HEALTH), 
+        mHealing(healing)
+    {}
     
 protected:
-    float healing;
+    float mHealing;
 };
 
 #endif // HEALTH_H

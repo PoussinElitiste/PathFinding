@@ -7,10 +7,8 @@ class Weapon : public PowerUp
 {
 public:
     Weapon(const char* name, Vertex position) :
-        PowerUp(name, position)
-    {
-        mType = WEAPON;
-    }
+        PowerUp(name, position, PowerUpType::WEAPON)
+    {}
 };
 
 #endif // WEAPON_H

@@ -2,44 +2,41 @@
 #define POWER_UP_H
 
 #include "Vertex.h"
-#include <string.h>
 
 class PowerUp
 {
 public:
-    PowerUp(const char* name, Vertex position)
+    enum class PowerUpType
     {
-        mPosition = position;
-        mName = new char [strlen(name)];
-        strcpy(mName, name);
-    }
+        INVALID = -1,
+        WEAPON,
+        ARMOUR,
+        HEALTH
+    };
+
+    PowerUp(const char* name, Vertex position, PowerUpType pType = PowerUpType::INVALID):
+        mType(pType), mPosition(std::move(position)), mName(name)
+    {    }
 
     ~PowerUp()
     {
         delete mName;
-    }
-
-    enum PowerUpType
-    {
-        WEAPON,
-        ARMOUR, 
-        HEALTH
-    };
+    }   
 
     PowerUpType GetPowerUpType() const
     {
-        return(mType);
+        return mType;
     };
 
     const Vertex& GetPosition() const
     {
-        return(mPosition);
+        return mPosition;
     }
 
 protected:
     Vertex      mPosition;
     PowerUpType mType;
-    char*       mName;
+    const char* mName;
 };
 
 #endif // POWER_UP_H

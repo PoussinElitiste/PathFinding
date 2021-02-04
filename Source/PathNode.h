@@ -16,11 +16,8 @@ class PathNode
 {
 public:
     PathNode(const char* name, Vertex position) :
-        mPosition(position)
-    {
-        mName = new char [strlen(name)];
-        strcpy(mName, name);
-    }
+        mPosition(position), mName(name)
+    {}
     
     ~PathNode()
     {
@@ -50,22 +47,22 @@ public:
 
     const char* GetName() const
     {
-        return(mName);
+        return mName;
     }
 
     const PathNodes& GetLinks() const
     {
-        return(mLinks);
+        return mLinks;
     }
 
     const PowerUps& GetPowerUps() const
     {
-        return(mPowerUps); 
+        return mPowerUps; 
     }
 
 protected:
     Vertex      mPosition;
-    char*       mName;
+    const char* mName;
 
     PathNodes   mLinks;
     PowerUps    mPowerUps;

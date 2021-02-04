@@ -6,10 +6,7 @@
 
 #include <stdio.h>
 
-static PathNodes sPathNodes;
-static PowerUps sPowerUps;
-
-bool FindPowerUp(PathNodes& path, PowerUp::PowerUpType mType, PathNode *start)
+bool FindPowerUp(PathNodes& path, PowerUp::PowerUpType puType, PathNode *start)
 {
     /* Example:
     path.push_back(start);
@@ -30,43 +27,47 @@ inline void LinkNodes(PathNode *n1, PathNode *n2)
 
 int main(int, char*[])
 {
-    sPathNodes.push_back(new PathNode("Node0", Vertex(300, 60, 0)));
-    sPathNodes.push_back(new PathNode("Node1", Vertex(100, 60, 0)));
-    sPathNodes.push_back(new PathNode("Node2", Vertex(80, 560, 0)));
-    sPathNodes.push_back(new PathNode("Node3", Vertex(280, 650, 0)));
-    sPathNodes.push_back(new PathNode("Node4", Vertex(300, 250, 0)));
-    sPathNodes.push_back(new PathNode("Node5", Vertex(450, 400, 0)));
-    sPathNodes.push_back(new PathNode("Node6", Vertex(450, 60, 0)));
-    sPathNodes.push_back(new PathNode("Node7", Vertex(450, 400, 0)));
+    PathNodes pathNodes{
+        new PathNode("Node0", Vertex(300, 60, 0)),
+        new PathNode("Node1", Vertex(100, 60, 0)),
+        new PathNode("Node2", Vertex(80, 560, 0)),
+        new PathNode("Node3", Vertex(280, 650, 0)),
+        new PathNode("Node4", Vertex(300, 250, 0)),
+        new PathNode("Node5", Vertex(450, 400, 0)),
+        new PathNode("Node6", Vertex(450, 60, 0)),
+        new PathNode("Node7", Vertex(450, 400, 0))
+    };
 
-    LinkNodes(sPathNodes[1], sPathNodes[4]);
-    LinkNodes(sPathNodes[0], sPathNodes[1]);
-    LinkNodes(sPathNodes[0], sPathNodes[6]);
-    LinkNodes(sPathNodes[0], sPathNodes[4]);
-    LinkNodes(sPathNodes[7], sPathNodes[4]);
-    LinkNodes(sPathNodes[7], sPathNodes[5]);
-    LinkNodes(sPathNodes[2], sPathNodes[4]);
-    LinkNodes(sPathNodes[2], sPathNodes[3]);
-    LinkNodes(sPathNodes[3], sPathNodes[5]);
+    LinkNodes(pathNodes[1], pathNodes[4]);
+    LinkNodes(pathNodes[0], pathNodes[1]);
+    LinkNodes(pathNodes[0], pathNodes[6]);
+    LinkNodes(pathNodes[0], pathNodes[4]);
+    LinkNodes(pathNodes[7], pathNodes[4]);
+    LinkNodes(pathNodes[7], pathNodes[5]);
+    LinkNodes(pathNodes[2], pathNodes[4]);
+    LinkNodes(pathNodes[2], pathNodes[3]);
+    LinkNodes(pathNodes[3], pathNodes[5]);
 
-    sPowerUps.push_back(new Weapon("Weapon0", Vertex(340, 670, 0)));
-    sPathNodes[3]->AddPowerUp(sPowerUps[0]);    
-    sPowerUps.push_back(new Weapon("Weapon1", Vertex(500, 220, 0)));
-    sPathNodes[7]->AddPowerUp(sPowerUps[1]);    
+    PowerUps powerUps;
 
-    sPowerUps.push_back(new Health("Health0", Vertex(490, 10, 0)));
-    sPathNodes[6]->AddPowerUp(sPowerUps[2]);    
-    sPowerUps.push_back(new Health("Health1", Vertex(120, 20, 0)));
-    sPathNodes[1]->AddPowerUp(sPowerUps[3]);    
+    powerUps.push_back(new Weapon("Weapon0", Vertex(340, 670, 0)));
+    pathNodes[3]->AddPowerUp(powerUps[0]);    
+    powerUps.push_back(new Weapon("Weapon1", Vertex(500, 220, 0)));
+    pathNodes[7]->AddPowerUp(powerUps[1]);    
 
-    sPowerUps.push_back(new Armor("Armour0", Vertex(500, 360, 0)));
-    sPathNodes[5]->AddPowerUp(sPowerUps[4]);    
-    sPowerUps.push_back(new Armor("Armour1", Vertex(180, 525, 0)));
-    sPathNodes[2]->AddPowerUp(sPowerUps[5]);    
+    powerUps.push_back(new Health("Health0", Vertex(490, 10, 0), 5.f));
+    pathNodes[6]->AddPowerUp(powerUps[2]);    
+    powerUps.push_back(new Health("Health1", Vertex(120, 20, 0), 10.f));
+    pathNodes[1]->AddPowerUp(powerUps[3]);    
+
+    powerUps.push_back(new Armor("Armour0", Vertex(500, 360, 0)));
+    pathNodes[5]->AddPowerUp(powerUps[4]);    
+    powerUps.push_back(new Armor("Armour1", Vertex(180, 525, 0)));
+    pathNodes[2]->AddPowerUp(powerUps[5]);    
 
     PathNodes path;
 
-    if(!FindPowerUp(path, PowerUp::WEAPON, sPathNodes[4]))
+    if(!FindPowerUp(path, PowerUp::PowerUpType::WEAPON, pathNodes[4]))
     {
         printf("No path found: IMPOSSIBLE!\n");
     }
@@ -74,14 +75,13 @@ int main(int, char*[])
     {
         printf("Path found: ");
 
-        for(PathNodes::iterator i = path.begin(); i != path.end(); ++i)
+        for (auto node : path)
         {
-            PathNode *n = *i;
-            printf("%s ", n->GetName());
+            printf("%s ", node->GetName());
         }
 
         printf("\n");
     }
        
-    return(0);
+    return 0;
 }
