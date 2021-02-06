@@ -12,8 +12,8 @@ bool FindPowerUp(PathNodes& path, PowerUp::PowerUpType puType, PathNode *start)
     path.push_back(start);
     path.push_back(secondNode);
     path.push_back(endNode);
-    return(true);
-    */
+    return(true);*/
+    
     
     return(false); // No path found.
 }
@@ -79,7 +79,7 @@ int main(int, char*[])
 
         for (auto node : path)
         {
-            printf("%s ", node->GetName());
+            printf("%s ", node->GetName().c_str());
         }
 
         printf("\n");

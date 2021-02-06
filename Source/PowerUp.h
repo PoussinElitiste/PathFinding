@@ -2,6 +2,7 @@
 #define POWER_UP_H
 
 #include "Vertex.h"
+#include <string>
 
 class PowerUp
 {
@@ -14,14 +15,13 @@ public:
         HEALTH
     };
 
-    PowerUp(const char* name, Vertex position, PowerUpType pType = PowerUpType::INVALID):
-        mType(pType), mPosition(std::move(position)), mName(name)
+    PowerUp(std::string name, Vertex position, PowerUpType pType = PowerUpType::INVALID)
+        : mType(pType)
+        , mPosition(std::move(position))
+        , mName(std::move(name))
     {}
 
-    ~PowerUp()
-    {
-        delete[] mName;
-    }   
+    ~PowerUp() = default;
 
     PowerUpType GetPowerUpType() const
     {
@@ -36,7 +36,7 @@ public:
 protected:
     Vertex      mPosition;
     PowerUpType mType;
-    const char* mName;
+    const std::string mName;
 };
 
 #endif // POWER_UP_H

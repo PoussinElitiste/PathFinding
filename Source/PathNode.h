@@ -4,6 +4,7 @@
 #include "Vertex.h"
 #include <memory>
 #include <vector>
+#include <string>
 
 class PathNode;
 typedef std::vector<PathNode*> PathNodes;
@@ -14,8 +15,9 @@ typedef std::vector<PowerUp*> PowerUps;
 class PathNode
 {
 public:
-    PathNode(const char* name, Vertex position) :
-        mPosition(std::move(position)), mName(name)
+    PathNode(std::string name, Vertex position) 
+        : mPosition(std::move(position))
+        , mName(std::move(name))
     {}
     
     ~PathNode() = default;
@@ -42,7 +44,7 @@ public:
         mPowerUps.erase(it);
     }
 
-    const char* GetName() const
+    const std::string& GetName() const
     {
         return mName;
     }
@@ -58,11 +60,11 @@ public:
     }
 
 protected:
-    Vertex      mPosition;
-    const char* mName;
+    Vertex              mPosition;
+    const std::string   mName;
 
-    PathNodes   mLinks;
-    PowerUps    mPowerUps;
+    PathNodes           mLinks;
+    PowerUps            mPowerUps;
 };
 
 #endif // PATH_NODE_H
