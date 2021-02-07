@@ -6,6 +6,9 @@
 
 #include <stdio.h>
 
+typedef std::vector<float> NodeDistances;
+
+// Following Research, Dijkstra offer shortest solution for single-source path problem with non negative edge weight
 bool FindPowerUp(PathNodes& path, PowerUp::PowerUpType puType, PathNode *start)
 {
     /* Example:
@@ -13,7 +16,8 @@ bool FindPowerUp(PathNodes& path, PowerUp::PowerUpType puType, PathNode *start)
     path.push_back(secondNode);
     path.push_back(endNode);
     return(true);*/
-    
+
+    // TODO:
     
     return(false); // No path found.
 }
@@ -21,6 +25,14 @@ bool FindPowerUp(PathNodes& path, PowerUp::PowerUpType puType, PathNode *start)
 // For this example, all links are symmetric.
 inline void LinkNodes(PathNode *n1, PathNode *n2)
 {
+    if (!n1 || !n2)
+    {
+        printf("[ERROR] invalid node");
+        return;
+    }
+
+    auto weight = n1->
+    //NodeDistances
     n1->AddLink(n2);
     n2->AddLink(n1);
 }

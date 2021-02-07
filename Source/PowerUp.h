@@ -15,13 +15,13 @@ public:
         HEALTH
     };
 
-    PowerUp(std::string name, Vertex position, PowerUpType pType = PowerUpType::INVALID)
-        : mType(pType)
-        , mPosition(std::move(position))
-        , mName(std::move(name))
+    PowerUp(std::string name, Vertex position, PowerUpType pType = PowerUpType::INVALID) : 
+        mType(pType), 
+        mPosition(std::move(position)), 
+        mName(std::move(name))
     {}
 
-    ~PowerUp() = default;
+    virtual ~PowerUp() = default;
 
     PowerUpType GetPowerUpType() const
     {

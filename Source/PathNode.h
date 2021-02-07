@@ -15,9 +15,9 @@ typedef std::vector<PowerUp*> PowerUps;
 class PathNode
 {
 public:
-    PathNode(std::string name, Vertex position) 
-        : mPosition(std::move(position))
-        , mName(std::move(name))
+    PathNode(std::string name, Vertex position) : 
+        mPosition(std::move(position)), 
+        mName(std::move(name))
     {}
     
     ~PathNode() = default;
