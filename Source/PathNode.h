@@ -49,6 +49,11 @@ public:
         return mName;
     }
 
+    const Vertex& GetVertex() const
+    {
+        return mPosition;
+    }
+
     const PathNodes& GetLinks() const
     {
         return mLinks;

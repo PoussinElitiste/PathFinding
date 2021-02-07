@@ -3,10 +3,12 @@
 #include "Weapon.h"
 #include "Health.h"
 #include "Armor.h"
+#include "PathSection.h"
 
 #include <stdio.h>
+#include <optional>
 
-typedef std::vector<float> NodeDistances;
+typedef std::vector<PathSection> NodeEdges;
 
 // Following Research, Dijkstra offer shortest solution for single-source path problem with non negative edge weight
 bool FindPowerUp(PathNodes& path, PowerUp::PowerUpType puType, PathNode *start)
@@ -23,18 +25,20 @@ bool FindPowerUp(PathNodes& path, PowerUp::PowerUpType puType, PathNode *start)
 }
 
 // For this example, all links are symmetric.
-inline void LinkNodes(PathNode *n1, PathNode *n2)
+inline void LinkNodes(NodeEdges &edges, PathNode *n1, PathNode *n2)
 {
     if (!n1 || !n2)
     {
         printf("[ERROR] invalid node");
-        return;
+        return ;
     }
 
-    auto weight = n1->
+    Vertex distance = n1->GetVertex() - n2->GetVertex();
+    double weight = distance.length();
     //NodeDistances
     n1->AddLink(n2);
     n2->AddLink(n1);
+    edges.emplace_back(PathSection(n1, n2, weight));
 }
 
 int main(int, char*[])
@@ -52,15 +56,16 @@ int main(int, char*[])
     pathNodes.emplace_back(std::make_unique<PathNode>("Node6", std::move(Vertex(450, 60 , 0))));
     pathNodes.emplace_back(std::make_unique<PathNode>("Node7", std::move(Vertex(450, 400, 0))));
 
-    LinkNodes(pathNodes[1].get(), pathNodes[4].get());
-    LinkNodes(pathNodes[0].get(), pathNodes[1].get());
-    LinkNodes(pathNodes[0].get(), pathNodes[6].get());
-    LinkNodes(pathNodes[0].get(), pathNodes[4].get());
-    LinkNodes(pathNodes[7].get(), pathNodes[4].get());
-    LinkNodes(pathNodes[7].get(), pathNodes[5].get());
-    LinkNodes(pathNodes[2].get(), pathNodes[4].get());
-    LinkNodes(pathNodes[2].get(), pathNodes[3].get());
-    LinkNodes(pathNodes[3].get(), pathNodes[5].get());
+    NodeEdges edges;
+    LinkNodes(edges, pathNodes[1].get(), pathNodes[4].get());
+    LinkNodes(edges, pathNodes[0].get(), pathNodes[1].get());
+    LinkNodes(edges, pathNodes[0].get(), pathNodes[6].get());
+    LinkNodes(edges, pathNodes[0].get(), pathNodes[4].get());
+    LinkNodes(edges, pathNodes[7].get(), pathNodes[4].get());
+    LinkNodes(edges, pathNodes[7].get(), pathNodes[5].get());
+    LinkNodes(edges, pathNodes[2].get(), pathNodes[4].get());
+    LinkNodes(edges, pathNodes[2].get(), pathNodes[3].get());
+    LinkNodes(edges, pathNodes[3].get(), pathNodes[5].get());
 
     UniquePowerUps powerUps;
 
