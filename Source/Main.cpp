@@ -45,7 +45,6 @@ inline void LinkNodes(PathNode *n1, PathNode *n2)
 
 int main(int, char*[])
 {
-
     sPathNodes.emplace_back(std::make_unique<PathNode>("Node0", std::move(Vertex(300, 60 , 0))));
     sPathNodes.emplace_back(std::make_unique<PathNode>("Node1", std::move(Vertex(100, 60 , 0))));
     sPathNodes.emplace_back(std::make_unique<PathNode>("Node2", std::move(Vertex(80 , 560, 0))));
@@ -57,22 +56,30 @@ int main(int, char*[])
 
     LinkNodes(sPathNodes[1].get(), sPathNodes[4].get());
     sPathEdges.emplace_back(PathSection(sPathNodes[1].get(), sPathNodes[4].get()));
+
     LinkNodes(sPathNodes[0].get(), sPathNodes[1].get());
     sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[1].get()));
+
     LinkNodes(sPathNodes[0].get(), sPathNodes[6].get());
-    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[1].get()));
+    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[6].get()));
+
     LinkNodes(sPathNodes[0].get(), sPathNodes[4].get());
-    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[1].get()));
+    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[4].get()));
+
     LinkNodes(sPathNodes[7].get(), sPathNodes[4].get());
-    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[1].get()));
+    sPathEdges.emplace_back(PathSection(sPathNodes[7].get(), sPathNodes[4].get()));
+
     LinkNodes(sPathNodes[7].get(), sPathNodes[5].get());
-    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[1].get()));
+    sPathEdges.emplace_back(PathSection(sPathNodes[7].get(), sPathNodes[5].get()));
+
     LinkNodes(sPathNodes[2].get(), sPathNodes[4].get());
-    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[1].get()));
+    sPathEdges.emplace_back(PathSection(sPathNodes[2].get(), sPathNodes[4].get()));
+
     LinkNodes(sPathNodes[2].get(), sPathNodes[3].get());
-    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[1].get()));
+    sPathEdges.emplace_back(PathSection(sPathNodes[2].get(), sPathNodes[3].get()));
+
     LinkNodes(sPathNodes[3].get(), sPathNodes[5].get());
-    sPathEdges.emplace_back(PathSection(sPathNodes[0].get(), sPathNodes[1].get()));
+    sPathEdges.emplace_back(PathSection(sPathNodes[3].get(), sPathNodes[5].get()));
 
     sPowerUps.emplace_back(std::make_unique<Weapon>("Weapon0", std::move(Vertex(340, 670, 0))));
     sPathNodes[3]->AddPowerUp(sPowerUps[0].get());    
@@ -91,7 +98,7 @@ int main(int, char*[])
 
     PathNodes path;
 
-    if(!FindPowerUp(path, PowerUp::PowerUpType::WEAPON, sPathNodes[4].get()))
+    if (!FindPowerUp(path, PowerUp::PowerUpType::WEAPON, sPathNodes[4].get()))
     {
         printf("No path found: IMPOSSIBLE!\n");
     }
