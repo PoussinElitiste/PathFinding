@@ -6,8 +6,8 @@
 class Health : public PowerUp
 {
 public:
-    Health(const char* name, Vertex position, float healing) : 
-        PowerUp(name, std::move(position), PowerUpType::HEALTH), 
+    Health(std::string name, Vertex position, float healing) : 
+        PowerUp(std::move(name), std::move(position), PowerUpType::HEALTH), 
         mHealing(healing)
     {}
     

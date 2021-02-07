@@ -6,8 +6,8 @@
 class Weapon : public PowerUp
 {
 public:
-    Weapon(const char* name, Vertex position) :
-        PowerUp(name, std::move(position), PowerUpType::WEAPON)
+    Weapon(std::string name, Vertex position) :
+        PowerUp(std::move(name), std::move(position), PowerUpType::WEAPON)
     {}
 };
 

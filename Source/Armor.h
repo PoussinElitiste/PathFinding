@@ -6,8 +6,8 @@
 class Armor : public PowerUp
 {
 public:
-    Armor(const char* name, Vertex position) :
-        PowerUp(name, std::move(position), PowerUpType::ARMOUR), mClanTag(NULL)
+    Armor(std::string name, Vertex position) :
+        PowerUp(std::move(name), std::move(position), PowerUpType::ARMOUR), mClanTag(NULL)
     {}
 
     ~Armor()
