@@ -44,9 +44,9 @@ public:
         mPowerUps.erase(it);
     }
 
-    const std::string& GetName() const
+    const char* GetName() const
     {
-        return mName;
+        return mName.c_str();
     }
 
     const Vertex& GetVertex() const
