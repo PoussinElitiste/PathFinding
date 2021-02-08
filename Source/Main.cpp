@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <algorithm>
 #include <unordered_map>
+#include <deque>
 
 typedef std::vector<std::unique_ptr<PowerUp>> UniquePowerUps;
 typedef std::unique_ptr<PathNode> PathNodePtr;
@@ -38,53 +39,132 @@ bool FindPowerUp(PathNodes& path,const PowerUp::PowerUpType puType, PathNode *st
 
     ResolutionPaths pathResolver;
     std::vector<PathNode*> exploredNode;
-    // init Path Resolver
+    std::vector<PathNode*> targetNodes;
+
+    // Helpers
+    auto isExploredNode = [&exploredNode](const PathNode* node) -> bool
+    {
+        return std::find(exploredNode.begin(), exploredNode.end(), node) != exploredNode.end();
+    };
+
+    auto containPowerUp = [puType](const PowerUps &puList) -> bool
+    {
+        return std::find_if(puList.begin(), puList.end(), [puType](const PowerUp *pu) -> bool{
+            return pu->GetPowerUpType() == puType;
+        }) != puList.end();
+    };
+
+    // initialize Path Resolver
     for (const auto &node: sPathNodes)
     {
-        pathResolver[node.get()] = {};
+        pathResolver.emplace(std::make_pair( node.get(), PathSection(node.get()) ));
+        if (containPowerUp(node->GetPowerUps()))
+        {
+            targetNodes.push_back(node.get());
+        }
     }
 
     // define start point
     auto currentNode = start;
-    exploredNode.push_back(start);
-    pathResolver[start].totalDistance = 0.;
+    pathResolver.at(start).totalDistance = 0.;
 
-    //while (!currentNode->IsExplored())
-    //{
-    //    currentNode->Explored();
-    //    for (auto nextNode : currentNode->GetLinks())
-    //    {
-    //        if (nextNode)
-    //        {
-    //        }
-    //    }
-    //}
+    // feed Path Resolver
+    while (currentNode && !isExploredNode(currentNode))
+    {
+        PathNode* closestNode = {};
+        // Loop through attached nodes
+        for (auto linkedNode : currentNode->GetLinks())
+        {
+            if (!isExploredNode(linkedNode))
+            {
+                auto& nextSection = pathResolver.at(linkedNode);
+                double nextNodeWeight = currentNode->GetDistance(linkedNode);
 
-    //path.push_back(secondNode);
-    //path.push_back(endNode);
+                // Resolve total distance and update Path Resolver
+                double totalDistance = pathResolver.at(currentNode).totalDistance + nextNodeWeight;
+                if (totalDistance < nextSection.totalDistance)
+                {
+                    nextSection.totalDistance = totalDistance;
+                    nextSection.parentSection = &pathResolver.at(currentNode);
+                }
+
+                // find next closest node
+                if (!closestNode || nextNodeWeight < closestNode->GetDistance(currentNode) )
+                {
+                    closestNode = linkedNode;
+                }
+            }
+        }
+        
+        // register has explored node
+        exploredNode.push_back(currentNode);
+
+        // adjustment to be sure all node are explored
+        if (!closestNode && exploredNode.size() < pathResolver.size())
+        {
+            for (auto linkedNode : start->GetLinks())
+            {
+                if (!isExploredNode(linkedNode))
+                {
+                    double nextNodeWeight = start->GetDistance(linkedNode);
+                    // find next closest node
+                    if (!closestNode || nextNodeWeight < closestNode->GetDistance(start))
+                    {
+                        closestNode = linkedNode;
+                    }
+                }
+            }
+        }
+
+        // set next node to explore
+        currentNode = closestNode;
+    }
+
+    // find closest target
+    PathNode* closestTarget = {};
+    for (auto target :targetNodes)
+    {
+        if (!closestTarget || pathResolver.at(target).totalDistance < pathResolver.at(closestTarget).totalDistance)
+        {
+            closestTarget = target;
+        }
+    }
+    
+    std::deque<PathNode*> targetPath;
+    if (closestTarget)
+    {
+        // travel path resolver from target to start node
+        const PathSection *currentSection = &pathResolver.at(closestTarget);
+        while (currentSection->parentSection)
+        {
+            targetPath.push_front(currentSection->targetNode);
+            currentSection = currentSection->parentSection;
+        }
+    }
+
     path.push_back(start);
+    for (auto node : targetPath)
+        path.push_back(node);
+
     return path.size() > 1;
 }
-
-bool GetClosestNode(const PowerUps& puList, const PowerUp::PowerUpType puType)
-{
-    return false;
-}
-
 
 // For this example, all links are symmetric.
 inline void LinkNodes(PathNode *n1, PathNode *n2)
 {
     if (!n1 || !n2)
     {
-        printf("[ERROR] invalid node");
+        printf("[ERROR] [LinkNodes] invalid node");
         return ;
     }
 
-    Vertex distance = n1->GetVertex() - n2->GetVertex();
-    double weight = distance.length();
-    n1->AddLink(n2, weight);
-    n2->AddLink(n1, weight);
+    Vertex direction = n1->GetVertex() - n2->GetVertex();
+    double distance = direction.length();
+    n1->AddLink(n2);
+    n1->SetDistance(n2, distance);
+
+    n2->AddLink(n1);
+    n2->SetDistance(n1, distance);
 }
 
 int main(int, char*[])

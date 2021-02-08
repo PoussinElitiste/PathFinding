@@ -25,21 +25,35 @@ public:
     
     ~PathNode() = default;
 
-    void AddLink(PathNode *pathNode, double weight)
+    void AddLink(PathNode *pathNode)
     {
         if (!pathNode)
         {
             printf("[ERROR] [AddLink] Invalid node");
             return;
         }
+
+        mLinks.push_back(pathNode);
+    }
+
+    void SetDistance(PathNode *pathNode, double distance)
+    {
+        if (!pathNode)
+        {
+            printf("[ERROR] [SetWeight] Invalid node");
+            return;
+        }
        
-        mDistances.emplace(pathNode, weight);
+        mDistances.emplace(pathNode, distance);
     }
     
     void RemoveLink(PathNode *pathNode)
     {
-        PathNodes::iterator i = std::find(mLinks.begin(), mLinks.end(), pathNode);
-        mLinks.erase(i);
+        PathNodes::iterator it = std::find(mLinks.begin(), mLinks.end(), pathNode);
+        if (it == mLinks.end())
+            return;
+        mLinks.erase(it);
+        mDistances.erase(pathNode);
     }
 
     void AddPowerUp(PowerUp *powerUp)
@@ -74,6 +88,7 @@ public:
         {
             return mDistances.at(pathNode);
         }
+        printf("[ERROR] [GetDistance] node not found");
         return std::numeric_limits<double>::max();
     }
 
