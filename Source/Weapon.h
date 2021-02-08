@@ -6,9 +6,13 @@
 class Weapon : public PowerUp
 {
 public:
-    Weapon(std::string name, Vertex position) :
-        PowerUp(std::move(name), std::move(position), PowerUpType::WEAPON)
+    Weapon(std::string name, Vertex position, float damage) :
+        PowerUp(std::move(name), std::move(position), PowerUpType::WEAPON),
+        mDamage(damage)
     {}
+
+private:
+    float mDamage;
 };
 
 #endif // WEAPON_H

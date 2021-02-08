@@ -6,8 +6,9 @@
 class Armor : public PowerUp
 {
 public:
-    Armor(std::string name, Vertex position) :
-        PowerUp(std::move(name), std::move(position), PowerUpType::ARMOUR)
+    Armor(std::string name, Vertex position, float hitPoint) :
+        PowerUp(std::move(name), std::move(position), PowerUpType::ARMOUR),
+        mHitPoint(hitPoint)
     {}
 
     ~Armor() = default;
@@ -24,6 +25,7 @@ public:
 
 protected:
     std::string mClanTag;
+    float mHitPoint;
 };
 
 #endif // ARMOUR_H

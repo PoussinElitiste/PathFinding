@@ -188,9 +188,9 @@ int main(int, char*[])
     LinkNodes(sPathNodes[2].get(), sPathNodes[3].get());
     LinkNodes(sPathNodes[3].get(), sPathNodes[5].get());
 
-    sPowerUps.emplace_back(std::make_unique<Weapon>("Weapon0", std::move(Vertex(340, 670, 0))));
+    sPowerUps.emplace_back(std::make_unique<Weapon>("Weapon0", std::move(Vertex(340, 670, 0)), 10.f));
     sPathNodes[3]->AddPowerUp(sPowerUps[0].get());    
-    sPowerUps.emplace_back(std::make_unique<Weapon>("Weapon1", std::move(Vertex(500, 220, 0))));
+    sPowerUps.emplace_back(std::make_unique<Weapon>("Weapon1", std::move(Vertex(500, 220, 0)), 20.f));
     sPathNodes[7]->AddPowerUp(sPowerUps[1].get());
 
     sPowerUps.emplace_back(std::make_unique<Health>("Health0", std::move(Vertex(490, 10, 0)), 5.f));
@@ -198,9 +198,9 @@ int main(int, char*[])
     sPowerUps.emplace_back(std::make_unique<Health>("Health1", std::move(Vertex(120, 20, 0)), 10.f));
     sPathNodes[1]->AddPowerUp(sPowerUps[3].get());
 
-    sPowerUps.emplace_back(std::make_unique<Armor>("Armour0", std::move(Vertex(500, 360, 0))));
+    sPowerUps.emplace_back(std::make_unique<Armor>("Armour0", std::move(Vertex(500, 360, 0)), 5.f));
     sPathNodes[5]->AddPowerUp(sPowerUps[4].get());
-    sPowerUps.emplace_back(std::make_unique<Armor>("Armour1", std::move(Vertex(180, 525, 0))));
+    sPowerUps.emplace_back(std::make_unique<Armor>("Armour1", std::move(Vertex(180, 525, 0)), 3.f));
     sPathNodes[2]->AddPowerUp(sPowerUps[5].get());
 
     PathNodes path;

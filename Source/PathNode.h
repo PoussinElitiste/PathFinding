@@ -52,6 +52,7 @@ public:
         PathNodes::iterator it = std::find(mLinks.begin(), mLinks.end(), pathNode);
         if (it == mLinks.end())
             return;
+
         mLinks.erase(it);
         mDistances.erase(pathNode);
     }
